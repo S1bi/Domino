@@ -1,0 +1,12 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/fabiosibilla/Documents/GitHub/dominoo/main'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _selezioneTessera, symObjAddr: 0x0, symBinAddr: 0x10000347C, symSize: 0x2C }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _selezioneTessera, symObjAddr: 0x0, symBinAddr: 0x10000347C, symSize: 0x2C }
+  - { offsetInCU: 0x73, offset: 0x73, size: 0x8, addend: 0x0, symName: _genTessere, symObjAddr: 0x2C, symBinAddr: 0x1000034A8, symSize: 0xBC }
+  - { offsetInCU: 0xDD, offset: 0xDD, size: 0x8, addend: 0x0, symName: _stampaDeck, symObjAddr: 0xE8, symBinAddr: 0x100003564, symSize: 0x94 }
+  - { offsetInCU: 0x11D, offset: 0x11D, size: 0x8, addend: 0x0, symName: _stampaTerreno, symObjAddr: 0x17C, symBinAddr: 0x1000035F8, symSize: 0xC0 }
+  - { offsetInCU: 0x16B, offset: 0x16B, size: 0x8, addend: 0x0, symName: _ruotaTessera, symObjAddr: 0x23C, symBinAddr: 0x1000036B8, symSize: 0xF0 }
+  - { offsetInCU: 0x1B9, offset: 0x1B9, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x32C, symBinAddr: 0x1000037A8, symSize: 0x534 }
+...
