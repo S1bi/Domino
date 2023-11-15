@@ -2,10 +2,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-                   //array superglobale di gestione delle tessere in mano
-
-
-
 void selezioneTessera(int a){              //fa la selezione del giusto indice usando un puntatore (basta dargli in input la variabile da cambiare)
     int* ptrA = &a;
     *ptrA = a*2 -2;
