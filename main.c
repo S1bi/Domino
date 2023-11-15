@@ -2,9 +2,10 @@
 #include <time.h>
 #include <stdlib.h>
 
-void selezioneTessera(int a){              //fa la selezione del giusto indice usando un puntatore (basta dargli in input la variabile da cambiare)
-    int* ptrA = &a;
-    *ptrA = a*2 -2;
+int scelta = 0; 
+
+int selezioneTessera(int a){              //fa la selezione del giusto indice usando un puntatore (basta dargli in input la variabile da cambiare)
+    return a*2 -2;
 }
 
 void genTessere (int *deck, int nTessere) {
@@ -17,7 +18,7 @@ void genTessere (int *deck, int nTessere) {
 
 void stampaDeck(int *tessereDeck) {                     //lettura e formattazione dell'array
     printf("DECK: \n");
-    for(int i = 0; i < sizeof(*tessereDeck)/sizeof(int)*2; i = i+2) {
+    for(int i = 0; i < scelta*2; i = i+2) {
         printf("[%d|%d]", tessereDeck[i], tessereDeck[i+1]);                    //stampa delle tessere una a una
     }
 }
@@ -44,7 +45,7 @@ void ruotaTessera(int *tessereDeck, int scelta) {
 }
 
 int main() {
-    int scelta = 0;                 //selezione difficoltà e quantità tessere
+
     int arrayInserimento[2];        //array di gestione delle tessere da inserire
     do {
         printf("BENVENUTO NEL GIOCO DEL DOMINO! \n"
@@ -99,9 +100,9 @@ int main() {
                     printf("Selezionare la tessera da inserire tra 1 e %d: \n", scelta);
                     scanf("%d", &selezione);
                 }while(selezione < 1 || selezione > scelta);
-                selezioneTessera(selezione);                   //da cambiare se l'altra va
-                arrayInserimento[0] = tessereDeck[selezione];           //popolo la prima posizione
-                arrayInserimento[1] = tessereDeck[selezione+1];         //popolo la seconda posizione
+                int sel = selezioneTessera(selezione);                   //da cambiare se l'altra va
+                arrayInserimento[0] = tessereDeck[sel];           //popolo la prima posizione
+                arrayInserimento[1] = tessereDeck[sel+1];         //popolo la seconda posizione
                 //CASO 0 DI ARRAY CAMPO VUOTO
                 if(tessereCampo[0] == 0) {
                     tessereCampo[0] = arrayInserimento[0];
