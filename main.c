@@ -43,6 +43,7 @@ void stampaTerreno(int *terreno, int dim)
         if (terreno[i + 1] != 0)                           // così non stampa le caselle vuote
             printf("[%d|%d]", terreno[i], terreno[i + 1]); // stampa delle tessere una a una
     }
+    printf("\n");
 }
 
 void ruotaTessera(int *tessereDeck, int pos, int *arraySel)
@@ -83,6 +84,24 @@ void inserisciDestra(int* selezione, int* tabellone, int dim, int pos, int* deck
         printf("La tessera non corrisponde, provare a ruotarla o cambiare tessera \n");
     }
     stampaTerreno(tabellone, dim);
+    stampaDeck(deck);
+}
+
+void inserisciSinistra(int* selezione, int* tabellone, int dim, int pos, int* deck) {
+    if(selezione[1] == tabellone[0]) {
+        for (size_t i = dim-3; i != -1; i--)
+        {
+            tabellone[i+2] = tabellone[i];
+        }
+        tabellone[0] = selezione[0];
+        tabellone[1] = selezione[1];
+        rimuoviUtilizzo(pos, deck);
+    }
+    else {
+        printf("La tessera non corrisponde, provare a ruotarla o cambiare tessera \n");
+    }
+    stampaTerreno(tabellone, dim);
+    stampaDeck(deck);
 }
 
 int main()
@@ -185,11 +204,10 @@ int main()
             if (mossa == 1)
             {
                 inserisciDestra(puntSel, tessereCampo, scelta, posTessera, deck);
-                stampaDeck(deck);
             }
             else
             {
-                // inserimento a sx
+                inserisciSinistra(puntSel, tessereCampo, scelta, posTessera, deck);
             }
         } while (mossa != 1 && mossa != 2);
         break;
