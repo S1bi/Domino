@@ -29,7 +29,7 @@ void stampaDeck(int *tessereDeck)
     printf("DECK: \n");
     for (int i = 0; i < scelta * 2; i = i + 2)
     {
-        if(tessereDeck[i] != 0)
+        if (tessereDeck[i] != 0)
             printf("[%d|%d]", tessereDeck[i], tessereDeck[i + 1]); // stampa delle tessere una a una
     }
     printf("\n");
@@ -57,47 +57,55 @@ void ruotaTessera(int *tessereDeck, int pos, int *arraySel)
     stampaSelezione(arraySel);
 }
 
-int ultimaTessera (int* array, int dim) {            //trova la posizione dell'ultima tessera dell'array
+int ultimaTessera(int *array, int dim)
+{ // trova la posizione dell'ultima tessera dell'array
     for (size_t i = 0; i < dim; i++)
     {
-        if(array[i] == 0) {
-            return i-1;
+        if (array[i] == 0)
+        {
+            return i - 1;
         }
     }
-    return 0;                                   //funzionante
+    return 0; // funzionante
 }
 
-void rimuoviUtilizzo (int pos, int* deck) {
+void rimuoviUtilizzo(int pos, int *deck)
+{
     deck[pos] = 0;
     deck[pos + 1] = 0;
 }
 
-
-void inserisciDestra(int* selezione, int* tabellone, int dim, int pos, int* deck) {
+void inserisciDestra(int *selezione, int *tabellone, int dim, int pos, int *deck)
+{
     int ultimaTess = ultimaTessera(tabellone, dim);
-    if(selezione[0] == tabellone[ultimaTess]) {
-        tabellone[ultimaTess+1] = selezione[0];
-        tabellone[ultimaTess+2] = selezione[1];
+    if (selezione[0] == tabellone[ultimaTess])
+    {
+        tabellone[ultimaTess + 1] = selezione[0];
+        tabellone[ultimaTess + 2] = selezione[1];
         rimuoviUtilizzo(pos, deck);
     }
-    else {
+    else
+    {
         printf("La tessera non corrisponde, provare a ruotarla o cambiare tessera \n");
     }
     stampaTerreno(tabellone, dim);
     stampaDeck(deck);
 }
 
-void inserisciSinistra(int* selezione, int* tabellone, int dim, int pos, int* deck) {
-    if(selezione[1] == tabellone[0]) {
-        for (size_t i = dim-3; i != -1; i--)
+void inserisciSinistra(int *selezione, int *tabellone, int dim, int pos, int *deck)
+{
+    if (selezione[1] == tabellone[0])
+    {
+        for (size_t i = dim - 3; i != -1; i--)
         {
-            tabellone[i+2] = tabellone[i];
+            tabellone[i + 2] = tabellone[i];
         }
         tabellone[0] = selezione[0];
         tabellone[1] = selezione[1];
         rimuoviUtilizzo(pos, deck);
     }
-    else {
+    else
+    {
         printf("La tessera non corrisponde, provare a ruotarla o cambiare tessera \n");
     }
     stampaTerreno(tabellone, dim);
@@ -106,8 +114,8 @@ void inserisciSinistra(int* selezione, int* tabellone, int dim, int pos, int* de
 
 int main()
 {
-    int annulla = 0;       // operazione annulla ciclo
-    int arraySelezione[2]; // array di gestione delle tessere da inserire
+    int annulla = 0;            // operazione annulla ciclo
+    int arraySelezione[2];      // array di gestione delle tessere da inserire
     do
     {
         printf("BENVENUTO NEL GIOCO DEL DOMINO! \n"
@@ -148,9 +156,8 @@ int main()
     tessereCampo[0] = 1;
     tessereCampo[1] = 5;
 
-    //stampo il terreno per far scegliere la mossa
-    stampaTerreno(tessereCampo, scelta);  
-
+    // stampo il terreno per far scegliere la mossa
+    stampaTerreno(tessereCampo, scelta);
 
     int selezione = 0;
     do
@@ -158,7 +165,7 @@ int main()
         printf("\nSelezionare la tessera su cui operare tra 1 e %d: \n", scelta);
         scanf("%d", &selezione);
     } while (selezione < 1 || selezione > scelta);
-    int posTessera = selezioneTessera(selezione); //tessera selezionata dall'utente
+    int posTessera = selezioneTessera(selezione); // tessera selezionata dall'utente
     arraySelezione[0] = tessereDeck[posTessera];  // popolo la prima posizione
     arraySelezione[1] = tessereDeck[posTessera + 1];
     int *puntSel = arraySelezione;
@@ -166,7 +173,7 @@ int main()
     // IMPLEMENTARE METODO DI CONTROLLO PER FINE PARTITA (CICLO PER SCELTA MOSSA)
 
     int mossa = 0;
-    
+
     do
     {
         printf("\nScegliere la prossima mossa: \n"
