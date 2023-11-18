@@ -4,9 +4,18 @@
 
 int scelta = 0;
 
-int selezioneTessera(int a)
+int selezioneTessera(int a, int* deck)
 { // fa la selezione del giusto indice (basta dargli in input la variabile da cambiare)
-    return a * 2 - 2;
+    int x = a * 2 - 2;
+    if(deck[x] != 0) 
+        return x;
+    else {
+        while(deck[x] == 0) {
+            x++;
+        }
+        return x;
+    }
+        
 }
 
 void stampaSelezione(int *sel)
@@ -29,7 +38,7 @@ void stampaDeck(int *tessereDeck)
     printf("DECK: \n");
     for (int i = 0; i < scelta * 2; i = i + 2)
     {
-        if (tessereDeck[i] != 0)
+        //if (tessereDeck[i] != 0)
             printf("[%d|%d]", tessereDeck[i], tessereDeck[i + 1]); // stampa delle tessere una a una
     }
     printf("\n");
@@ -40,7 +49,7 @@ void stampaTerreno(int *terreno, int dim)
     printf("CAMPO: \n");
     for (int i = 0; i < dim * 2; i = i + 2)
     {
-        if (terreno[i + 1] != 0)                           // così non stampa le caselle vuote
+        //if (terreno[i + 1] != 0)                           // così non stampa le caselle vuote
             printf("[%d|%d]", terreno[i], terreno[i + 1]); // stampa delle tessere una a una
     }
     printf("\n");
@@ -48,7 +57,7 @@ void stampaTerreno(int *terreno, int dim)
 
 void ruotaTessera(int *tessereDeck, int pos, int *arraySel)
 {
-    selezioneTessera(pos);                   // seleziono il primo valore della tessera scelta (usare anche per scelta tessera da inserire)
+    selezioneTessera(pos, tessereDeck);                   // seleziono il primo valore della tessera scelta (usare anche per scelta tessera da inserire)
     int temp = tessereDeck[pos];             // variabile d'appoggio
     tessereDeck[pos] = tessereDeck[pos + 1]; // tessera selezionata = val successivo
     tessereDeck[pos + 1] = temp;             // tessera successiva alla selezionata cambiata
@@ -59,7 +68,7 @@ void ruotaTessera(int *tessereDeck, int pos, int *arraySel)
 
 int ultimaTessera(int *array, int dim)
 { // trova la posizione dell'ultima tessera dell'array
-    for (size_t i = 0; i < dim; i++)
+    for (size_t i = 0; i < dim*2; i++)
     {
         if (array[i] == 0)
         {
@@ -69,10 +78,22 @@ int ultimaTessera(int *array, int dim)
     return 0; // funzionante
 }
 
-void rimuoviUtilizzo(int pos, int *deck)
+void rimuoviUtilizzo(int pos, int *deck, int dim)
 {
-    deck[pos] = 0;
-    deck[pos + 1] = 0;
+    dim = dim * 2;
+    for (size_t i = pos; i <= dim; i++)
+    {
+        if(i == dim) {
+            deck[i - 1] = 0;
+            deck[i - 2] = 0;
+        }
+        else if (i+2 == 0) {
+            deck[i] = 0;
+        }
+        else {
+            deck[i] = deck[i+2];
+        }
+    } 
 }
 
 void inserisciDestra(int *selezione, int *tabellone, int dim, int pos, int *deck)
@@ -82,7 +103,7 @@ void inserisciDestra(int *selezione, int *tabellone, int dim, int pos, int *deck
     {
         tabellone[ultimaTess + 1] = selezione[0];
         tabellone[ultimaTess + 2] = selezione[1];
-        rimuoviUtilizzo(pos, deck);
+        rimuoviUtilizzo(pos, deck, scelta);
     }
     else
     {
@@ -102,7 +123,7 @@ void inserisciSinistra(int *selezione, int *tabellone, int dim, int pos, int *de
         }
         tabellone[0] = selezione[0];
         tabellone[1] = selezione[1];
-        rimuoviUtilizzo(pos, deck);
+        rimuoviUtilizzo(pos, deck, scelta);
     }
     else
     {
@@ -152,76 +173,81 @@ int main()
     printf("IL GIOCO HA INIZIO \n Le tue tessere sono: \n");
     stampaDeck(deck);
 
-    // INIIZIALIZZAZIONE CAMPO A SCOPO DI PROGETTAZIONE
+    /* // INIIZIALIZZAZIONE CAMPO A SCOPO DI PROGETTAZIONE
     tessereCampo[0] = 1;
     tessereCampo[1] = 5;
-
+ */
     // stampo il terreno per far scegliere la mossa
     stampaTerreno(tessereCampo, scelta);
 
-    int selezione = 0;
-    do
+    //LOOP DI GIOCO TEST
+    while (deck != 0)
     {
-        printf("\nSelezionare la tessera su cui operare tra 1 e %d: \n", scelta);
-        scanf("%d", &selezione);
-    } while (selezione < 1 || selezione > scelta);
-    int posTessera = selezioneTessera(selezione); // tessera selezionata dall'utente
-    arraySelezione[0] = tessereDeck[posTessera];  // popolo la prima posizione
-    arraySelezione[1] = tessereDeck[posTessera + 1];
-    int *puntSel = arraySelezione;
-    stampaSelezione(puntSel);
-    // IMPLEMENTARE METODO DI CONTROLLO PER FINE PARTITA (CICLO PER SCELTA MOSSA)
-
-    int mossa = 0;
-
-    do
-    {
-        printf("\nScegliere la prossima mossa: \n"
-               "1. Rotazione; \n"
-               "2. Inserimento; \n"
-               // POSSIBILE FUNZIONE AIUTO(?)
-               "3. Annulla; \n");
-        scanf("%d", &mossa);
-    } while (mossa > 3 || mossa < 1); // controllo l'input utente
-    switch (mossa)
-    { // switch case di selezione della mossa
-    case 1:
-        ruotaTessera(deck, posTessera, puntSel);
-        break;
-    case 2:
-        // CASO 0 DI ARRAY CAMPO VUOTO
-        /* if (tessereCampo[0] == 0)
+        int selezione = 0;
+        do
         {
-            tessereCampo[0] = arraySelezione[0];
-            tessereCampo[1] = arraySelezione[1];
-            // STAMPA DEL TERRENO
-            stampaTerreno(tessereCampo, scelta);
-            // RIMOZIONE TESSERE DAL DECK
-            rimuoviUtilizzo(puntSel);
-            break;
-        } */
-        // INSERIMENTI POST PRIMO
+            printf("\nSelezionare la tessera su cui operare tra 1 e %d: \n", scelta);
+            scanf("%d", &selezione);
+        } while (selezione < 1 || selezione > scelta);
+        int posTessera = selezioneTessera(selezione, tessereDeck); // tessera selezionata dall'utente
+        arraySelezione[0] = tessereDeck[posTessera];  // popolo la prima posizione
+        arraySelezione[1] = tessereDeck[posTessera + 1];
+        int *puntSel = arraySelezione;
+        stampaSelezione(puntSel);
+        // IMPLEMENTARE METODO DI CONTROLLO PER FINE PARTITA (CICLO PER SCELTA MOSSA)
+
+        int mossa = 0;
 
         do
         {
-            printf("Dove si vuole inserire la tessera? \n"
-                   "1. Destra \n"
-                   "2. Sinistra \n");
+            printf("\nScegliere la prossima mossa: \n"
+                "1. Rotazione; \n"
+                "2. Inserimento; \n"
+                // POSSIBILE FUNZIONE AIUTO(?)
+                "3. Annulla; \n");
             scanf("%d", &mossa);
-            if (mossa == 1)
+        } while (mossa > 3 || mossa < 1); // controllo l'input utente
+        switch (mossa)
+        { // switch case di selezione della mossa
+        case 1:
+            ruotaTessera(deck, posTessera, puntSel);
+        case 2:
+            // CASO 0 DI ARRAY CAMPO VUOTO
+            if (tessereCampo[0] == 0)
             {
-                inserisciDestra(puntSel, tessereCampo, scelta, posTessera, deck);
+                tessereCampo[0] = arraySelezione[0];
+                tessereCampo[1] = arraySelezione[1];
+                // STAMPA DEL TERRENO
+                stampaTerreno(tessereCampo, scelta);
+                // RIMOZIONE TESSERE DAL DECK
+                rimuoviUtilizzo(posTessera, deck, scelta);
+                stampaDeck(tessereDeck);
+                break;
             }
-            else
+            // INSERIMENTI POST PRIMO
+
+            do
             {
-                inserisciSinistra(puntSel, tessereCampo, scelta, posTessera, deck);
-            }
-        } while (mossa != 1 && mossa != 2);
-        break;
-    case 3:
-        annulla = 1; // da implementare poi per i cicli
-        printf("Operazione annullata, ritorno al tuo deck: \n");
-        stampaDeck(deck);
-        return 0;
+                printf("Dove si vuole inserire la tessera? \n"
+                    "1. Destra \n"
+                    "2. Sinistra \n");
+                scanf("%d", &mossa);
+                if (mossa == 1)
+                {
+                    inserisciDestra(puntSel, tessereCampo, scelta, posTessera, deck);
+                }
+                else
+                {
+                    inserisciSinistra(puntSel, tessereCampo, scelta, posTessera, deck);
+                }
+            } while (mossa != 1 && mossa != 2);
+            break;
+        case 3:
+            annulla = 1; // da implementare poi per i cicli
+            printf("Operazione annullata, ritorno al tuo deck: \n");
+            stampaDeck(deck);
+        }
     }
+    
+    return 0;
 }
