@@ -41,8 +41,8 @@ void stampaDeck(int *tessereDeck)
     printf("DECK: \n");
     for (int i = 0; i < scelta * 2; i = i + 2)
     {
-        // if (tessereDeck[i] != 0)
-        printf("[%d|%d]", tessereDeck[i], tessereDeck[i + 1]); // stampa delle tessere una a una
+        if (tessereDeck[i] != 0)
+            printf("[%d|%d]", tessereDeck[i], tessereDeck[i + 1]); // stampa delle tessere una a una
     }
     printf("\n");
 }
@@ -52,8 +52,8 @@ void stampaTerreno(int *terreno)
     printf("CAMPO: \n");
     for (int i = 0; i < scelta * 2; i = i + 2)
     {
-        // if (terreno[i + 1] != 0)                           // così non stampa le caselle vuote
-        printf("[%d|%d]", terreno[i], terreno[i + 1]); // stampa delle tessere una a una
+        if (terreno[i + 1] != 0)                           // così non stampa le caselle vuote
+            printf("[%d|%d]", terreno[i], terreno[i + 1]); // stampa delle tessere una a una
     }
     printf("\n");
 }
@@ -227,14 +227,14 @@ int main()
 
     // VARIABILE DI ENDGAME
     int mosse = 1;
-
+    int tesseraOP = scelta;         //tessera max tra cui scegliere
     // LOOP DI GIOCO TEST
     while (mosse == 1)
     {
         int selezione = 0;
         do
         {
-            printf("\nSelezionare la tessera su cui operare tra 1 e %d: \n", scelta);
+            printf("\nSelezionare la tessera su cui operare tra 1 e %d: \n", tesseraOP);
             scanf("%d", &selezione);
         } while (selezione < 1 || selezione > scelta);
         int posTessera = selezioneTessera(selezione, tessereDeck); // tessera selezionata dall'utente
@@ -294,7 +294,7 @@ int main()
             printf("Operazione annullata, ritorno al tuo deck: \n");
             stampaDeck(deck);
         }
-
+        tesseraOP--;
         if (tessereDeck[0] == 0)
             mosse = 0;
         if (mosse != 0)
