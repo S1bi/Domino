@@ -42,7 +42,7 @@ void stampaDeck(int *tessereDeck)
     for (int i = 0; i < scelta * 2; i = i + 2)
     {
         if (tessereDeck[i] != 0)
-            printf("[%d|%d]", tessereDeck[i], tessereDeck[i + 1]); // stampa delle tessere una a una
+            printf("%d. [%d|%d] ", i/2 + 1, tessereDeck[i], tessereDeck[i + 1]); // stampa delle tessere una a una
     }
     printf("\n");
 }
@@ -227,7 +227,7 @@ int main()
 
     // VARIABILE DI ENDGAME
     int mosse = 1;
-    int tesseraOP = scelta;         //tessera max tra cui scegliere
+    int tesseraOP = scelta; // tessera max tra cui scegliere
     // LOOP DI GIOCO TEST
     while (mosse == 1)
     {
